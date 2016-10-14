@@ -1,7 +1,20 @@
+import { render } from 'react-dom';
+import React from 'react';
+import { Provider } from 'react-redux';
+import initialState from './services/initialAppState';
+import createStore from './services/createAppStore';
+
 require("./Assets/style.scss")
 
-var React = require('react');
+
 
 var App = require('./App.js');
 
-React.render(<App/>, document.getElementById('body'))
+const store = createStore(initialState);
+render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.getElementById('app-root')
+);
+
