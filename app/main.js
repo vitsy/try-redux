@@ -7,8 +7,9 @@ import createStore from './services/createAppStore';
 require("./Assets/style.scss")
 
 
+const App = require('./App.js');
 
-var App = require('./App.js');
+
 
 const store = createStore(initialState);
 render(
