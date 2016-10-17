@@ -32,6 +32,7 @@ module.exports = {
     loaders: commonConfig.loaders.concat(devLoaders)
   },
   plugins: [
-    commonConfig.indexPagePlugin
+    commonConfig.indexPagePlugin,
+    commonConfig.jQueryPlugin,
   ],
 };

@@ -16,8 +16,11 @@ const Header = React.createClass({
 
 });
 */
-const Header = ({text, reset, fill}) => (
+const Header = ({text, reset, fill, baseState}) =>
+
+	(
 	//const { roomId, users, presetUsername } = this.props;
+
 
 	<div className='header'>
 			webpack react starter kit4 - {text}
@@ -30,12 +33,14 @@ Header.propTypes = {
 	text: React.PropTypes.string,
 	reset: React.PropTypes.func,
 	fill: React.PropTypes.func,
+	baseState: React.PropTypes.string
 };
 
 
 const mapStateToProps = function(state) {
 	return {
-		text: state.get('text')
+		text: state.get('text'),
+		baseState: state.get('baseState')
 	};
 }
 

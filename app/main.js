@@ -3,8 +3,11 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import initialState from './services/initialAppState';
 import createStore from './services/createAppStore';
+//import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap.js';
 
-require("./Assets/style.scss")
+require("./Assets/style.css")
+
 
 
 const App = require('./App.js');

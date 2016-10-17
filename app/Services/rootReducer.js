@@ -3,7 +3,9 @@ import Immutable from 'immutable';
 //import clientSettingsStore from './clientSettingsStore';
 import {
     ACTION1,
-    RESET
+    RESET,
+    HOME,
+    NEW_SESSION,
     } from './actionTypes';
 
 
@@ -18,6 +20,9 @@ import {
  */
 export default function rootReducer(state = {}, action = {}) {
    switch (action.type) {
+     case HOME :
+     case NEW_SESSION :
+       return state.set('baseState', action.type)
       case ACTION1:
         return state.set('text', action.text);
      case RESET:

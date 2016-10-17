@@ -1,7 +1,7 @@
-var React = require('react');
+import React from 'react';
 
-var Header = require('./Components/Header');
-var Content = require('./Components/Content');
+import Header from './Components/Header';
+import Content from './Components/Content';
 var Favicon = require('react-favicon');
 
 var faviconUrl = require('./Assets/favicon.ico');
