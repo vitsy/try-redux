@@ -5,24 +5,29 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Home from './Home.js';
 import NewSession from './NewSession.js';
+import Vote from './Vote.js';
+import logger from 'loglevel';
 import {
     HOME,
+    VOTE,
     NEW_SESSION,
-    } from '../Services/actionTypes';
-
+    } from '../Services/appActionTypes';
+const log = logger.getLogger('Content');
 class Content extends React.Component {
 
   componentDidMount() {
   }
 
   render() {
-    console.log('CONTENT');
+    log.debug('CONTENT');
     const { text, baseState } = this.props;
-    console.log('Content: %s %j',baseState,this.props);
+    log.debug('Content: %s %j',baseState,this.props);
     if( baseState === HOME ) {
       return <Home />;
     } else if( baseState === NEW_SESSION){
       return <NewSession />;
+    } else if( baseState === VOTE){
+      return <Vote />;
     } else {
       return (
       <div>

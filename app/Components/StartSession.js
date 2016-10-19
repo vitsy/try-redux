@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     NEW_SESSION
-    } from '../Services/actionTypes';
+    } from '../Services/appActionTypes';
 
 import { connect } from 'react-redux';
 import { setBaseState } from '../Services/actions.js';
@@ -29,7 +29,7 @@ const StartSession = ({text, startNewSession}) => (
 
 StartSession.propTypes = {
   text: React.PropTypes.string,
-  startNewSession: React.PropTypes.fun
+  startNewSession: React.PropTypes.func
 };
 
 const mapStateToProps = function(state) {

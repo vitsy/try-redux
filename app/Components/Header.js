@@ -2,20 +2,7 @@ import { connect } from 'react-redux';
 import React from 'react';
 import {reset, setText} from '../Services/actions';
 
-/*
-const Header = React.createClass({
-  displayName: 'Header',
 
-  render: function () {
-    return (
-    	<div className='header'>
-    	webpack react starter kit - {this.props.text}
-    	</div>
-		)
-	}
-
-});
-*/
 const Header = ({text, reset, fill, baseState}) =>
 
 	(

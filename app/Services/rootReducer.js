@@ -1,14 +1,19 @@
 import Immutable from 'immutable';
-
+import logger from 'loglevel';
 //import clientSettingsStore from './clientSettingsStore';
 import {
     ACTION1,
     RESET,
     HOME,
     NEW_SESSION,
-    } from './actionTypes';
+    VOTE,
+    CURRENT_USER,
+    IO_USERS,
+    IO_JOIN,
+    IO_LEAVE
+    } from './appActionTypes';
 
-
+const log = logger.getLogger('rootReducer');
 /**
  * the root redux reducer that decides if
  * - the action should be handled by an event reducer (when a backend event gets applied to our client state)
@@ -23,12 +28,20 @@ export default function rootReducer(state = {}, action = {}) {
      case HOME :
      case NEW_SESSION :
        return state.set('baseState', action.type)
-      case ACTION1:
+     case ACTION1:
         return state.set('text', action.text);
      case RESET:
        return state.set('text', '');
+    case CURRENT_USER :
+      return state.set('user', action.user);
+     case IO_USERS:
+       return state
+           .set('users', action.users)
+           .set('sessionID', action.sessionID)
+           .set('baseState', VOTE);
+
       default :
-        console.log('unknown action', action);
+        log.debug('unknown action', action);
         return state;
   }
 }

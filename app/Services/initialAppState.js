@@ -7,6 +7,12 @@ import Immutable from 'immutable';
 const INITIAL_STATE = Immutable.fromJS({
   text: 'One',
   baseState: 'HOME',
+  users: [], //{user: vote:}
+  msgs: [],
+  user: '',
+  sessionID: '',
+  points:[{text:'0 points', value:'0'}, {text:'1 points', value:'1'}, {text:'2 points', value:'2'} ,
+    {text:'3 points', value:'3'},{text:'5 points', value:'5'},{text:'10 points', value:'10'}],
 
   showHistory: true,
   showDescription: false,

@@ -1,16 +1,21 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import rootReducer from './rootReducer';
+import communicator from './ioCommunicator';
+import logger from 'loglevel';
 
 import {
-    ACTION1
-    } from './actionTypes';
-
+    ACTION1,
+    IO_USERS,
+    IO_JOIN,
+    IO_LEAVE
+    } from './appActionTypes';
+const log = logger.getLogger('createAppstore');
 
 const loggerMiddleware = store => next => action => {
-  console.log('reducing action', action);
+  log.debug('reducing action', action);
   let result = next(action);
-  console.log('modified state ', store.getState().toJS());
+  log.debug('modified state ', store.getState().toJS());
   return result;
 };
 
@@ -29,5 +34,17 @@ export default function createAppStore(initialState) {
           loggerMiddleware
       )
   );
+
+  communicator.io.on('join', (msg) => {
+    store.dispatch({ type: IO_JOIN, msg });
+  });
+  communicator.io.on('leave', (msg) => {
+    store.dispatch({ type: IO_LEAVE, msg });
+  });
+  communicator.io.on('users', (msg) => {
+    log.debug('users', msg);
+    store.dispatch({ type: IO_USERS, msg });
+  });
+
   return store;
 }
