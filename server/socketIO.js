@@ -50,13 +50,26 @@ const socketIO = (io) => {
       let session =  msg.sessionID && sessions[msg.sessionID];
 
       const user = Object.assign({}, msg);
-      if (!session) {
-        msg.sessionID = sessionID = getSessionID();
-        sessions[sessionID] = { users: [user], msgs:[]};
-        log.debug(`join to session(new) : ${msg.sessionID} user: ${user.user}`);
+      log.debug(`join to session  ${msg.sessionID} user:  ${msg.user} ${Object.keys(sessions)}` );
+      if (!session)  {
+        if (!msg.sessionID) {
+          msg.sessionID = sessionID = getSessionID();
+          sessions[sessionID] = { users: [user], msgs:[]};
+          log.debug(`join to session(new) : ${msg.sessionID} user: ${user.user}`);
+        } else {
+          socket.emit('badSession', msg);
+          return;
+        }
       } else {
-        session.users.push(user);
-        log.debug(`join to session : ${msg.sessionID} user: ${user.user}`);
+        if (user.user) {
+          session.users.push(user);
+          log.debug(`join to session : ${msg.sessionID} user: ${user.user}`);
+        } else {
+          session.users.push(user);
+          log.debug(`session exist: ${msg.sessionID}`);
+          socket.emit('goodSession', msg);
+          return;
+        }
       }
       socketToRoomMap[socket.id] = msg.sessionID;
       socketToUserIdMap[socket.id] = msg.user;
@@ -67,6 +80,28 @@ const socketIO = (io) => {
 
     socket.on('leave',removeUser);
     socket.on('disconnect', removeUser);
+
+    socket.on('vote', (msg) => {// {vote:}
+      const sessionID = socketToRoomMap[socket.id];
+      const session =  sessions[sessionID];
+      if (session) {
+        const userName = socketToUserIdMap[socket.id];
+        log.debug(`vote for session '${sessionID} from ${userName} vote ${msg.vote}`);
+        const user = session.users.find( u => u.user === userName);
+        user.vote = msg.vote;
+        io.in(sessionID).emit('vote', {user: userName, vote: msg.vote});
+      } else {
+        log.error(`vote for session '${sessionID} from ${userName} vote ${msg.vote}`);
+      }
+    });
+
+    socket.on('reset', (msg) => {// {vote:}
+      const sessionID = socketToRoomMap[socket.id];
+      const session =  sessions[sessionID];
+      log.debug(`reset for session '${sessionID}`);
+      const user = session.users.forEach( u =>  delete u.vote);
+      io.in(sessionID).emit('reset', {});
+    });
 
     socket.on('msg', (msg) => {
       const sessionID = socketToRoomMap[socket.id];

@@ -7,13 +7,18 @@ import logger from 'loglevel';
 const log = logger.getLogger('Vote');
 
 const PlayerArea = (arg) => {
-  const {users} = arg,
-      rows = users.map(u => (
-          <div  className="row player">
-            <div className="span3 playerName">
-              <i className="icon"></i>{u.get('user')}</div>
-            <div className="span1 playerPoints" >{u.get('vote')}</div>
-          </div>));
+  const {users,  showStatistic, user} = arg,
+
+      rows = users.map(u => {
+        const vote = u.get('vote') || '',
+            rowUser = u.get('user'),
+            canShowVote =  showStatistic || user ==  rowUser;
+        return (
+            <div  className="row player">
+              <div className="span3 playerName">
+                <i className="icon"></i>{rowUser}</div>
+              <div className="span1 playerPoints" className={canShowVote ? '' : 'voteHidden'}>{vote}</div>
+            </div>)});
   return (
       <div id="playerArea">
         <div className="header row">
@@ -29,14 +34,15 @@ const PlayerArea = (arg) => {
   )}
 PlayerArea.propTypes = {
   text: React.PropTypes.string,
-  users: React.PropTypes.instanceOf(Immutable.List)
-
+  showStatistic: React.PropTypes.bool,
+  users: React.PropTypes.oneOf([React.PropTypes.array, React.PropTypes.object]),//React.PropTypes.instanceOf(Immutable.List)
 };
 
 export default connect(
         state => ({
       text : state.get('text'),
       users  : state.get('users'),
+      showStatistic: state.get('showStatistic')
     })
 )(PlayerArea);
 

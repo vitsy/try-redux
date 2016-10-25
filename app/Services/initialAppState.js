@@ -10,6 +10,7 @@ const INITIAL_STATE = Immutable.fromJS({
   users: [], //{user: vote:}
   msgs: [],
   user: '',
+  userOwner: false,
   sessionID: '',
   points:[{text:'0 points', value:'0'}, {text:'1 points', value:'1'}, {text:'2 points', value:'2'} ,
     {text:'3 points', value:'3'},{text:'5 points', value:'5'},{text:'10 points', value:'10'}],
@@ -20,6 +21,10 @@ const INITIAL_STATE = Immutable.fromJS({
   observersCanShowVotes: false,
   playersCanResetVotes: true,
   observersCanResetVotes: false,
+
+
+  showStatistic: false,
+  voteAvg: '0',
 
 });
 

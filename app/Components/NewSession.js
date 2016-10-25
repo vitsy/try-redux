@@ -8,7 +8,7 @@ const log = logger.getLogger('NewSession');
 const optionChanges = {};
 const NewSession = (arg) => {
   const {showHistory, showDescription, playersCanShowVotes, observersCanShowVotes, playersCanResetVotes, observersCanResetVotes,
-      joinCommand, dispatch} = arg;
+      joinCommand, userOwner, dispatch} = arg;
   let userName;
 
   function onChangeOptionAction(arg) {
@@ -53,7 +53,7 @@ const NewSession = (arg) => {
 
 
 
-        <div className="settingsArea">
+        <div  className={userOwner ? 'settingsArea ' : 'site-hidden'} >
           <ul className="nav nav-tabs">
             <li className="active">
               <a  href="#1" data-toggle="tab">Settings</a>
@@ -131,6 +131,7 @@ NewSession.propTypes = {
   observersCanShowVotes: React.PropTypes.bool,
   playersCanResetVotes: React.PropTypes.bool,
   observersCanResetVotes: React.PropTypes.bool,
+  userOwner: React.PropTypes.bool,
   joinCommand: React.PropTypes.func
 };
 
@@ -143,6 +144,7 @@ export default connect(
           observersCanShowVotes: state.get('observersCanShowVotes'),
           playersCanResetVotes: state.get('playersCanResetVotes'),
           observersCanResetVotes: state.get('observersCanResetVotes'),
+          userOwner: state.get('userOwner'),
         }),
         dispatch => bindActionCreators({joinCommand}, dispatch)
 )(NewSession);

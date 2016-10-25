@@ -6,12 +6,12 @@ import PointButtons from './PointButtons.js';
 import PlayerArea from './PlayerArea.js';
 import ObserverArea from './ObserverArea.js';
 import VoteRightColumn from './VoteRightColumn.js';
-
+import {showVotes, resetVotes} from '../Services/actions';
 import logger from 'loglevel';
 const log = logger.getLogger('Vote');
 
 const Vote = (arg) => {
-  const {sessionID, user} = arg;
+  const {sessionID, user, showVotes, resetVotes, showStatistic} = arg;
   return (
       <div className="container-fluid">
         <div style={{position:'relative'}}>
@@ -33,10 +33,14 @@ const Vote = (arg) => {
 
                   <div className="row" style={{borderBbottom: '1px solid #eeeeee', marginBottom: '10px', paddingBbottom: '5px'}}>
                     <div className="span2">
-                      <input id="resetVotes" type="button" value="Clear Votes" className="btn btn-primary toolTipLong" title="" data-placement="left" data-original-title="Use when voting is complete - votes will be cleared for all players &amp; observers"/>
+                      <input id="resetVotes" type="button" value="Clear Votes" className="btn btn-primary toolTipLong"
+                             onClick={resetVotes}
+                             title="" data-placement="left" data-original-title="Use when voting is complete - votes will be cleared for all players &amp; observers"/>
                       </div>
                     <div className="span2">
-                        <input id="showVotes" type="button" value="Show Votes" className="btn btn-primary toolTipLong" title="" data-placement="right" data-original-title="Show votes to all players (useful when a user is not responding)"/>
+                        <input id="showVotes" type="button" value="Show Votes" className="btn btn-primary toolTipLong" title="" data-placement="right"
+                               onClick={showVotes}
+                               data-original-title="Show votes to all players (useful when a user is not responding)"/>
                       </div>
                   </div>
                   <PointButtons />
@@ -61,8 +65,6 @@ const Vote = (arg) => {
                   </div>
                 </div>
               </div>
-
-
               <VoteRightColumn />
             </div>
           </div>
@@ -76,11 +78,16 @@ Vote.propTypes = {
   text: React.PropTypes.string,
   sessionID: React.PropTypes.string,
   user: React.PropTypes.string,
+  showVotes:  React.PropTypes.func,
+  resetVotes:  React.PropTypes.func,
+  showStatistic: React.PropTypes.bool,
 };
 
 export default connect(
         state => ({
-          sessionID : state.get('text'),
-          user: state.get('text'),
-    })
+          sessionID : state.get('sessionID'),
+          user: state.get('user'),
+          showStatistic: state.get('showStatistic')
+    }),
+        dispatch => bindActionCreators({showVotes, resetVotes}, dispatch)
 )(Vote);

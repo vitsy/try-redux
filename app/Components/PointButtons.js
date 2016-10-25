@@ -10,9 +10,9 @@ const PointButtons = (arg) => {
   const rowSize = 4;
   const {points, voteCommand}  = arg;
 
-  function pointButtonClick() {
-    log.debug('click');
-    voteCommand();
+  function pointButtonClick(evt) {
+    log.debug('pointButtonClick');
+    voteCommand(evt.currentTarget.attributes['data-point-value'].value);
   }
 
   let rows = [],
@@ -22,16 +22,15 @@ const PointButtons = (arg) => {
                 <input type="button" value={point.get('text')}
                        onClick={pointButtonClick} className="voteButton btn btn-info btn-mini btn-width" data-point-value={point.get('value')}/>
               </div>);
+    row.push(b);
     if ((i + 1) % rowSize === 0) {
-      rows.push(<div class="btn-row row">{row}</div>);
+      rows.push(<div className="btn-row row">{row}</div>);
       row = [];
-    } else {
-      row.push(b);
     }
 
   });
   if (row.length > 0) {
-    rows.push(<div class="btn-row row">{row}</div>);
+    rows.push(<div className="btn-row row">{row}</div>);
   }
 
   return (
