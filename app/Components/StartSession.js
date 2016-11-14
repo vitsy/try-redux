@@ -6,29 +6,32 @@ import {
 
 import { connect } from 'react-redux';
 import { setBaseState, tryJoin } from '../Services/actions.js';
-
+import {Row, Col, Well, Button, FormControl} from 'react-bootstrap';
 let sessionID;
-const StartSession = ({ startNewSession, joinExistingSession, setBaseState}) => {
+const StartSession = ({ startNewSession, joinExistingSession, sessionMsg}) => {
       return (
-      <div className="span6" style={{width: "460px"}}>
-        <div className="row well well-small" style={{margin: "0 auto"}}>
-          <h4>Pointing Session</h4>
-          <div className="span2" style={{width: "130px", marginLeft: "0px"}}>
-            <button className="btn btn-primary" name="StartSession" onClick={startNewSession}>Start a Session</button>
-          </div>
-          <div className="span2 text-center" style={{width: "60px"}} >
-            <h4 style={{margin: "0px"}}>... or ...</h4>
-          </div>
-          <div className="span2 joinExistingSession" style={{width: "120px"}}>
-            <div className="input-append">
-              <input type="text" className="span1" style={{width: "67px", height: "20px"}} onkeypress="return isNumberKey(event, 5)"
-                     ref={(r) => sessionID = r} placeholder="Session ID"/>
-              <button className="btn btn-primary" name="JoinSession" onClick={joinExistingSession} value="Join">Join a session</button>
-            </div>
-          </div>
-        </div>
+          <Col sm={6}>
+            <Well >
+              <h4>Pointing Session</h4>
+                <Row>
+                  <Col sm={2} style={{width:"120px"}}>
+                    <Button bsStyle="primary" name="StartSession" onClick={startNewSession}>Start a Session</Button>
+                  </Col>
+                  <Col sm={1} style={{width:"120px",textAlign:"center"}}>
+                    <h4>... or ...</h4>
+                  </Col>
+                  <Col sm={2}  style={{width:"300px", paddingRight:"0px"}} >
+                    <Button bsStyle="primary" style={{float:"right"}}
+                            name="JoinSession" onClick={joinExistingSession} value="Join">Join a session</Button>
+                    <input type="text"  style={{float:"right",width:"160px"}} ref={(r) => sessionID = r}
+                            name="JoinSessionId" placeholder="Session ID"/>
+                    <span style={{paddingLeft:"10px", color:"red"}}>{sessionMsg}</span>
+                  </Col>
+              </Row>
 
-      </div>
+            </Well>
+          </Col>
+
   );
 
 }
@@ -37,13 +40,13 @@ StartSession.propTypes = {
   text: React.PropTypes.string,
   startNewSession: React.PropTypes.func,
   sessionID: React.PropTypes.string,
-  //joinCommand: React.PropTypes.func,
-  joinExistingSession: React.PropTypes.func,
+  sessionMsg: React.PropTypes.string,
+   joinExistingSession: React.PropTypes.func,
 };
 
 const mapStateToProps = function(state) {
   return {
-    //sessionID: state.get('sessionID')
+    sessionMsg: state.sessionMsg
   };
 }
 

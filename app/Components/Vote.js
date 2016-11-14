@@ -6,71 +6,62 @@ import PointButtons from './PointButtons.js';
 import PlayerArea from './PlayerArea.js';
 import ObserverArea from './ObserverArea.js';
 import VoteRightColumn from './VoteRightColumn.js';
-import {showVotes, resetVotes} from '../Services/actions';
+import {showVotes, resetVotes, sendMsg} from '../Services/actions';
+import {Grid, Row, Col, Button, FormControl} from 'react-bootstrap';
+
 import logger from 'loglevel';
 const log = logger.getLogger('Vote');
 
 const Vote = (arg) => {
-  const {sessionID, user, showVotes, resetVotes, showStatistic} = arg;
+  let newMsg;
+  const {sessionID, user, showVotes, resetVotes, sendMsg, showStatistic, msgs} = arg;
+  function msgClick() {
+    sendMsg({msg:newMsg.value});
+  }
+  let messages =  msgs.map( (msg, i) =>
+      (<li>{msg.msg}</li>))
+  document.getElementById("your_div");
+ // objDiv.scrollTop = objDiv.scrollHeigh
   return (
-      <div className="container-fluid">
-        <div style={{position:'relative'}}>
-          <div className="ppContainer">
-            <div id="status" className="muted">Session ID: {sessionID}</div>
-            <div className="row">
-              <div className="span5">
-                <div className="board site-hidden" style={{display: 'block'}}>
-                  <h1 id="playerName">{user}</h1>
+      <Grid fluid={true}>
+        <Row>
+          <Col sm={1}>
+          </Col>
+          <Col sm={3}>
+            <span id="status" >Session ID: <b>{sessionID}</b></span>
+           </Col>
+          <Col sm={7}>
+            <span id="playerName">User:<b>{user}</b></span>
+          </Col>
+          </Row>
 
-                  <div id="storyDescription">
-                    <div>
-                      <label>Story Description:</label>
-                    </div>
-                    <div>
-                      <textarea className="span5 expand20-100 toolTipLong" title="" data-placement="right" data-original-title="Optional story details - shared with other players" style={{height: '20px', overflow: 'hidden', paddingTop: '0px', paddingBottom: '0px'}}></textarea>
-                    </div>
-                  </div>
-
-                  <div className="row" style={{borderBbottom: '1px solid #eeeeee', marginBottom: '10px', paddingBbottom: '5px'}}>
-                    <div className="span2">
-                      <input id="resetVotes" type="button" value="Clear Votes" className="btn btn-primary toolTipLong"
-                             onClick={resetVotes}
-                             title="" data-placement="left" data-original-title="Use when voting is complete - votes will be cleared for all players &amp; observers"/>
-                      </div>
-                    <div className="span2">
-                        <input id="showVotes" type="button" value="Show Votes" className="btn btn-primary toolTipLong" title="" data-placement="right"
-                               onClick={showVotes}
-                               data-original-title="Show votes to all players (useful when a user is not responding)"/>
-                      </div>
-                  </div>
-                  <PointButtons />
-                  <PlayerArea />
-                  <ObserverArea />
-
-                  <h4 style={{marginTop: '50px'}} className="inviteLink" data-content="Invite a teammate!" data-original-title="" title="">Want to invite someone?  Send this link:</h4>
-                  <div className="popover fade right in" style={{top: '338.5px', left: '743.5px', display: 'block'}}>
-                    <div className="arrow"></div><h3 className="popover-title">You look lonely</h3><div className="popover-content">Invite a teammate!</div></div>
-                  <p>
-                    <a href="http://www.pointingpoker.com/68146">http://www.pointingpoker.com/68146</a>
-                  </p>
-                  <h4>...  or enter email addresses for invitees here:</h4>
-
-                  <div className="row">
-                    <div className="span3">
-                      <textarea id="txtInviteEmailAddresses" className="expand20-100 span3" style={{height: '20px', overflow: 'hidden', paddingTop: '0px', paddingBottom: '0px'}}></textarea>
-                    </div>
-                    <div className="span2">
-                      <input type="button" value="Send Invite" className="btn btn-small cst-btn-small site-hidden" id="btnSendInviteEmail"/>
-                    </div>
-                  </div>
-                </div>
+        <Row>
+          <Col sm={1}></Col>
+          <Col sm={3}>
+            <div id="storyDescription">
+              <div>
+                <label>Story Description:</label>
               </div>
-              <VoteRightColumn />
+              <div id="messages">
+                <ul>{messages}</ul>
+              </div>
             </div>
-          </div>
-
-        </div>
-      </div>
+            <input id="new-message" type="text"  ref={(ref) => newMsg = ref} />
+            <Button  bsStyle="primary" onClick={msgClick}>Send Msg</Button>
+          </Col>
+          <Col sm={4}>
+            <PointButtons />
+          </Col>
+          <Col sm={3}>
+                  <Button bsStyle="primary" name="ShowVotes" className="btn-align-right" onClick={showVotes}>Show Votes</Button>
+                  <Button bsStyle="primary" name="ClearVotes" className="btn-align-right" onClick={resetVotes}>Clear Votes</Button>
+                 <PlayerArea />
+                 <ObserverArea />
+                 <VoteRightColumn />
+          </Col>
+          <Col sm={1}></Col>
+        </Row>
+       </Grid>
   )
 }
 
@@ -80,14 +71,17 @@ Vote.propTypes = {
   user: React.PropTypes.string,
   showVotes:  React.PropTypes.func,
   resetVotes:  React.PropTypes.func,
+  sendMsg:  React.PropTypes.func,
   showStatistic: React.PropTypes.bool,
+  msgs:React.PropTypes.oneOf([React.PropTypes.array, React.PropTypes.object])
 };
 
 export default connect(
         state => ({
           sessionID : state.get('sessionID'),
           user: state.get('user'),
+          msgs: state.get('msgs'),
           showStatistic: state.get('showStatistic')
     }),
-        dispatch => bindActionCreators({showVotes, resetVotes}, dispatch)
+        dispatch => bindActionCreators({showVotes, resetVotes, sendMsg}, dispatch)
 )(Vote);

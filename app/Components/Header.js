@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import React from 'react';
 import {reset, setText} from '../Services/actions';
+import {Grid, Row, Col} from 'react-bootstrap';
 
 
 const Header = ({text, reset, fill, baseState}) =>
@@ -8,12 +9,15 @@ const Header = ({text, reset, fill, baseState}) =>
 	(
 	//const { roomId, users, presetUsername } = this.props;
 
+	<Grid className="header_holder" fluid={true}>
+		<Row className="header">
+			<Col sm={4}></Col>
+			<Col sm={4} className="header_title">Test</Col>
+			<Col sm={4}></Col>
+		</Row>
+	</Grid>
 
-	<div className='header'>
-			webpack react starter kit4 - {text}
-			<button onClick={reset}>Reset</button>
-			<button onClick={fill}>Fill</button>
-		</div>
+
 );
 
 Header.propTypes = {

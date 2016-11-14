@@ -13,6 +13,7 @@ import {
     IO_VOTE,
     IO_TRY_JOIN_SESSION,
     IO_RESET_VOTES,
+    IO_MSG
     } from './appActionTypes';
 const log = logger.getLogger('createAppstore');
 
@@ -65,6 +66,11 @@ export default function createAppStore(initialState) {
 
   communicator.io.on('goodSession', (msg) => {
     store.dispatch({ type: IO_TRY_JOIN_SESSION, msg});
+  });
+
+  communicator.io.on('msg', (msg) => {
+    log.debug('recive msg', msg);
+    store.dispatch({ type: IO_MSG, msg });
   });
 
   return store;

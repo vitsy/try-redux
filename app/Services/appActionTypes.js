@@ -17,4 +17,6 @@ export const IO_LEAVE = 'IO_LEAVE';
 export const IO_RESET_VOTES = 'IO_RESET_VOTES';
 export const IO_VOTE = 'IO_VOTE';
 export const IO_TRY_JOIN_SESSION  = 'IO_TRY_JOIN_SESSION';
+export const IO_MSG  = 'IO_MSG';
+export const IO_SEND_MSG  = 'IO_SEND_MSG';
 

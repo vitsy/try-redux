@@ -16,7 +16,8 @@ import {
     IO_RESET_VOTES,
     IO_VOTE,
     IO_JOIN,
-    IO_LEAVE
+    IO_LEAVE,
+    IO_MSG
     } from './appActionTypes';
 
 const log = logger.getLogger('rootReducer');
@@ -34,7 +35,8 @@ export default function rootReducer(state = {}, action = {}) {
   function calcVote(state){
        let k = 0;
        const  users = state.get('users');
-       let voteAvg = users.reduce( (data, u)  => {
+       let voteAvg=0,
+           voteAvgObj = users.reduce( (data, u)  => {
               const vote = u.get('vote');
               if (vote) {
                 data.sum +=  parseFloat(vote);
@@ -42,8 +44,8 @@ export default function rootReducer(state = {}, action = {}) {
              }
               return data;
             }, {sum:0, cout:0});
-            if (data.count > 0 ) {
-              voteAvg = Math.round(100*data.sum/data.count)/100;
+            if (voteAvgObj.count > 0 ) {
+              voteAvg = Math.round(100*voteAvgObj.sum/voteAvgObj.count)/100;
             }
     return state.set('voteAvg', voteAvg);
   }
@@ -88,6 +90,8 @@ export default function rootReducer(state = {}, action = {}) {
      case IO_VOTE:
        const ind = state.get('users').findIndex( u => u.get('user') == action.msg.user);
        return calcVote(ind >=0 ? state.setIn(['users', ind, 'vote'], action.msg.vote): state);
+     case IO_MSG:
+       return state.set('msgs', state.get('msgs').push(action.msg.msg));
      default :
         log.debug('unknown action', action);
         return state;

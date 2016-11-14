@@ -2,6 +2,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import {Grid, Row, Col, Button} from 'react-bootstrap';
+
 import logger from 'loglevel';
 const log = logger.getLogger('Vote');
 

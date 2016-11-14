@@ -11,10 +11,10 @@ module.exports = React.createClass({
 
   render: function () {
     return (<div>
-              <Header/>
-              <Content/>
-              <Favicon url={ faviconUrl }/>
-            </div>)
+      <Header/>
+      <Content/>
+      <Favicon url={faviconUrl}/>
+    </div>)
   }
 
 });

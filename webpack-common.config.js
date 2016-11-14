@@ -18,11 +18,12 @@ module.exports = {
       loaders: ['babel-loader?stage=0&optional=runtime'],
     },
     // styles
+    { test: /\.less/, loader: 'style!css!less' },
+    { test: /\.css$/, loader: 'style-loader!css-loader' },
     {
       test: /\.scss$/,
       loader: "style!css!autoprefixer-loader?browsers=last 2 version!sass"
     },
-    { test: /\.css$/, loader: 'style-loader!css-loader' },
 
     // and font files - embed them if possible
     { test: /\.(woff|woff2)$/, loader:"url?prefix=font/&limit=5000" },

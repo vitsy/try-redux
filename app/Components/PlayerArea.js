@@ -2,7 +2,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Immutable from 'immutable';
+
 import { bindActionCreators } from 'redux';
+import {Grid, Row, Col, Button} from 'react-bootstrap';
 import logger from 'loglevel';
 const log = logger.getLogger('Vote');
 
@@ -14,23 +16,23 @@ const PlayerArea = (arg) => {
             rowUser = u.get('user'),
             canShowVote =  showStatistic || user ==  rowUser;
         return (
-            <div  className="row player">
-              <div className="span3 playerName">
-                <i className="icon"></i>{rowUser}</div>
-              <div className="span1 playerPoints" className={canShowVote ? '' : 'voteHidden'}>{vote}</div>
-            </div>)});
+            <Row  className="player">
+              <Col sm={8}  className="playerName">
+                <i className="icon"></i>{rowUser}</Col>
+              <Col sm={4}  className={canShowVote ? '' : 'vote_hidden'}>{vote}</Col>
+            </Row>)});
   return (
-      <div id="playerArea">
-        <div className="header row">
-          <div className="span3">
+      <Grid id="playerArea">
+        <Row className="player_area_header">
+          <Col sm={8}>
             <strong>Player</strong>
-          </div>
-          <div className="span1">
+          </Col>
+          <Col sm={4}>
             <strong>Points</strong>
-          </div>
-        </div>
+          </Col>
+        </Row>
         {rows}
-      </div>
+      </Grid>
   )}
 PlayerArea.propTypes = {
   text: React.PropTypes.string,
@@ -40,8 +42,8 @@ PlayerArea.propTypes = {
 
 export default connect(
         state => ({
-      text : state.get('text'),
-      users  : state.get('users'),
+      text : state.text, //get('text'),
+      users  : state.users,//get('users'),
       showStatistic: state.get('showStatistic')
     })
 )(PlayerArea);

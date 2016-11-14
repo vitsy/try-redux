@@ -22,17 +22,19 @@ export const setBaseState = type => ({type});
 
 export const showVotes = () => ({ type: SHOW_VOTES });
 
-//socketIO commands
+//socketIO commands to server
 export const tryJoin  = (sessionID) => (dispatch, getState) => {
   const state = getState();
   communicator.send('join', {sessionID})
 };
 
-export const joinCommand = (user, sessionID) => (dispatch, getState) => {
+export const joinCommand = (user, sessionID, isObserver) => (dispatch, getState) => {
   const state = getState();
-  communicator.send('join', {user, sessionID : sessionID || state.get('sessionID')})
+  communicator.send('join', {user, sessionID : sessionID || state.get('sessionID'), isObserver})
   dispatch({ type:CURRENT_USER, user})
 };
+
+
 export const voteCommand = (vote) => (dispatch, getState) => {
   const state = getState();
   log.info('voteCommand');
@@ -45,3 +47,7 @@ export const resetVotes = () => (dispatch, getState) => {
   communicator.send('reset', {})
 };
 
+export const sendMsg = (msg) => (dispatch, getState) => {
+  log.info('send msg ',msg);
+  communicator.send('msg', {msg})
+};
